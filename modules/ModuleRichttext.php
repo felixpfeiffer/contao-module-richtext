@@ -84,14 +84,27 @@ class ModuleRichttext extends \Module
         // Add an image
         if ($this->richtextAddImage && $this->singleSRC != '')
         {
-            if (!is_numeric($this->singleSRC))
+            $blnProcess = true;
+            if(version_compare(VERSION,'3.2','>='))
             {
-                $this->Template->richtext = '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
+                $objModel = \FilesModel::findByUuid($this->singleSRC);
             }
             else
             {
-                $objModel = \FilesModel::findByPk($this->singleSRC);
+                if (!is_numeric($this->singleSRC))
+                {
+                    $this->Template->richtext = '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
+                    $blnProcess == false;
+                }
+                else
+                {
+                    $objModel = \FilesModel::findByPk($this->singleSRC);
 
+                }
+            }
+
+            if($blnProcess)
+            {
                 if ($objModel !== null && is_file(TL_ROOT . '/' . $objModel->path))
                 {
                     $arrItem = array(
