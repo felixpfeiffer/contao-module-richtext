@@ -63,11 +63,11 @@ class ModuleRichttext extends \Module
         // Clean the RTE output
         if ($objPage->outputFormat == 'xhtml')
         {
-            $this->richtext = \String::toXhtml($this->richtext);
+            $this->richtext = \StringUtil::toXhtml($this->richtext);
         }
         else
         {
-            $this->richtext = \String::toHtml5($this->richtext);
+            $this->richtext = \StringUtil::toHtml5($this->richtext);
         }
 
         // Add the static files URL to images
@@ -77,7 +77,7 @@ class ModuleRichttext extends \Module
             $this->richtext = str_replace(' src="' . $path, ' src="' . TL_FILES_URL . $path, $this->richtext);
         }
 
-        $this->Template->richtext = \String::encodeEmail($this->richtext);
+        $this->Template->richtext = \StringUtil::encodeEmail($this->richtext);
 
         $this->Template->addImage = false;
 
